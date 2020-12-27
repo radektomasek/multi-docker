@@ -1,0 +1,22 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t radektomasek/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true radektomasek/react-test npm test
+
+after_success:
+  - docker build -t radektomasek/multi-client ./client
+  - docker build -t radektomasek/multi-nginx ./nginx
+  - docker build -t radektomasek/multi-server ./server
+  - docker build -t radektomasek/multi-worker ./worker
+  # Log in to the Docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Take those images and push them to docker hub.
+  - docker push radektomasek/multi-client
+  - docker push radektomasek/multi-nginx
+  - docker push radektomasek/multi-server
+  - docker push radektomasek/multi-worker
