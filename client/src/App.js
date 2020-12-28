@@ -8,7 +8,7 @@ function App() {
     <Router>
       <div className="App">
         <header>
-          <h1>Welcome to react</h1>
+          <h1>fib in react</h1>
           <Link to="/">Home</Link>
           <Link to="/otherpage">Other Page</Link>
         </header>
